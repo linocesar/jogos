@@ -35,7 +35,7 @@ $tamanho_palavra = length $palavra_sorteada;
 
 $relatorio = &imprimeSaida($tamanho_palavra);
 print "A PALAVRA TEM ".$tamanho_palavra. " LETRAS\n";
-print $relatorio."\n";
+print "\t\t\t\t".$relatorio."\n";
 
 do{
 
@@ -68,7 +68,7 @@ do{
    }else {print RED, "APENAS UMA LETRA OU PALAVRA\n", RESET;}
 
   if ($flag == 0) {
-    print $relatorio."\n";
+    print "\t\t\t\t".$relatorio."\n\n";
   }
 
   $contotal++;
@@ -76,8 +76,8 @@ do{
 
 }while($flag == 0);
 
-print $vencedor . " VENCEU!\n";
-
+print BLUE, $vencedor . " VENCEU!\n", RESET;
+print BLUE, "A PALAVRA É ".$palavra_sorteada."\n", RESET;
 sub insereLetraPalavra {
   my $letra = $_[0]; #palpite de uma letra
   my $sorte = $_[1]; #palavra sorteada
