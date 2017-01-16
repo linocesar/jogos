@@ -4,7 +4,6 @@
 
 use strict;
 use warnings;
-use Switch;
 use Term::ANSIColor qw(:constants);
 
 my $arquivo = 'palavras.txt'; #$ARGV[0];
@@ -13,29 +12,54 @@ my $palavra_numero; #numero da linha onde se encontra a palavra.
 my $palavra_sorteada; #palavra
 my $numero_jogadores; #quantidade jogadores
 my @jogador;#lista armazena nome dos jogadores;
-my @letras;
 my $tamanho_palavra;
-my $contotal = 0;
-my $i = 0;
 my $palpite;
 my $tamanho_palpite;
-my $log_palpites = "";
 my $indice;
 my $relatorio;
+my %vencedores;
 my $vencedor;
-my $flag = 0;
+my $saindo;
+my @lista_vencedores;
+my $log_palpites;
+my $flag;
+my $contotal;
+my $i;
+my $numero_partidas = 0;
+
+
+print YELLOW, "OLA! BEM-VINDO AO JOGO DA FORCA!\n", RESET;
+sleep(1);
+print YELLOW, "VAMOS COMECAR!\n\n", RESET;
+sleep(1);
 
 $numero_jogadores = &setNumeroDeJogadores;
 @jogador = &iniciaJogadores($numero_jogadores);
 $numero_de_palavras = &contaPalavras($arquivo);
+
+do{
+
+$log_palpites = "";
+$saindo = "S";
+$flag = 0;
+$contotal = 0;
+$i = 0;
+$numero_partidas++;
+
+print "\nESCOLHENDO PALAVRA...\n";
+sleep(1);
+print "PALAVRA ESCOLHIDA!\n\n\n";
+sleep(1);
+
 $palavra_numero = int rand($numero_de_palavras) + 1;
 $palavra_sorteada = &pegaPalavra($arquivo, $palavra_numero);
 $tamanho_palavra = length $palavra_sorteada;
-@letras = split("", $palavra_sorteada);
-
 $relatorio = &imprimeSaida($tamanho_palavra);
+
 print "A PALAVRA TEM ".$tamanho_palavra. " LETRAS\n";
 print "\t\t\t\t".$relatorio."\n";
+sleep(1);
+
 
 do{
 
@@ -76,8 +100,27 @@ do{
 
 }while($flag == 0);
 
-print BLUE, $vencedor . " VENCEU!\n", RESET;
-print BLUE, "A PALAVRA É ".$palavra_sorteada."\n", RESET;
+
+print BLUE,"\n\n". $vencedor . " VENCEU!\n", RESET;
+print BLUE, "\t\t\t\t".$palavra_sorteada."\n", RESET;
+$vencedores{$vencedor}++;
+sleep(1);
+
+print "DESEJA CONTINUAR? S OU N\n";
+$saindo = uc(<STDIN>);
+chomp($saindo);
+
+}while($saindo eq "S");
+
+@lista_vencedores = keys %vencedores;
+print "NUMERO TOTAL DE PARTIDAS: ".$numero_partidas."\n";
+
+foreach my $x (@lista_vencedores) {
+  print "JOGADOR: ".$x."\tVENCEU ".$vencedores{$x}."\n";
+}
+
+
+
 sub insereLetraPalavra {
   my $letra = $_[0]; #palpite de uma letra
   my $sorte = $_[1]; #palavra sorteada
@@ -98,6 +141,7 @@ sub insereLetraPalavra {
 
 }
 
+
 sub imprimeSaida {
   my $num = $_[0];
   my $out;
@@ -107,6 +151,7 @@ sub imprimeSaida {
   return $out;
 
 }
+
 
 sub setNumeroDeJogadores {
   my $numero;
