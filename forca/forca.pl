@@ -28,9 +28,9 @@ my $i;
 my $numero_partidas = 0;
 
 
-print YELLOW, "OLA! BEM-VINDO AO JOGO DA FORCA!\n", RESET;
+print YELLOW BOLD, "OLA! BEM-VINDO AO JOGO DA FORCA!\n", RESET;
 sleep(1);
-print YELLOW, "VAMOS COMECAR!\n\n", RESET;
+print YELLOW BOLD, "VAMOS COMECAR!\n\n", RESET;
 sleep(1);
 
 $numero_jogadores = &setNumeroDeJogadores;
@@ -62,7 +62,7 @@ $tamanho_palavra = length $palavra_sorteada;
 $relatorio = &imprimeSaida($tamanho_palavra);
 
 print "A PALAVRA TEM ".$tamanho_palavra. " LETRAS\n";
-print "\t\t\t\t".$relatorio."\n";
+print YELLOW BOLD, "\t\t\t\t".$relatorio."\n", RESET;
 sleep(1);
 
 # Controla a lógica central do jogo.
@@ -92,12 +92,12 @@ do{
                   $vencedor = $jogador[$i];
                   $flag = 1;
               }
-        }else{print RED, "LETRA JA ESCOLHIDA\n", RESET;}
+        }else{print RED BOLD, "LETRA JA ESCOLHIDA\n", RESET;}
 
-   }else {print RED, "APENAS UMA LETRA OU PALAVRA\n", RESET;}
+   }else {print RED BOLD, "APENAS UMA LETRA OU PALAVRA\n", RESET;}
 
   if ($flag == 0) {
-    print "\t\t\t\t".$relatorio."\n\n";
+    print YELLOW BOLD, "\t\t\t\t".$relatorio."\n\n", RESET;
   }
 
   $contotal++;
@@ -105,10 +105,10 @@ do{
 
 }while($flag == 0);
 
-
-print BLUE,"\n\n". $vencedor . " VENCEU!\n", RESET;
-print BLUE, "\t\t\t\t".$palavra_sorteada."\n", RESET;
 $vencedores{$vencedor}++;
+
+print YELLOW BOLD,"\n\n". $vencedor . " VENCEU!\n", RESET;
+print YELLOW BOLD, "\t\t\t\t".$palavra_sorteada."\n", RESET;
 sleep(1);
 
 print "DESEJA CONTINUAR? S OU N\n";
@@ -117,10 +117,11 @@ chomp($saindo);
 
 }while($saindo eq "S");
 
-@lista_vencedores = keys %vencedores;
+#ordenacao dos jogadores por numero de vitorias.
+@lista_vencedores = sort {$vencedores{$b} <=> $vencedores{$a}} keys %vencedores;
 
 print "\n";
-foreach my $x (sort @lista_vencedores) {
+foreach my $x (@lista_vencedores) {
   print "JOGADOR: ".$x."\tVENCEU ".$vencedores{$x}."\n";
 }
 
