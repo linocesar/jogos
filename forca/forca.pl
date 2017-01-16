@@ -37,6 +37,11 @@ $numero_jogadores = &setNumeroDeJogadores;
 @jogador = &iniciaJogadores($numero_jogadores);
 $numero_de_palavras = &contaPalavras($arquivo);
 
+foreach my $x (@jogador) {
+  $vencedores{$x} = 0;
+}
+
+# Controla fluxo geral do jogo
 do{
 
 $log_palpites = "";
@@ -60,7 +65,7 @@ print "A PALAVRA TEM ".$tamanho_palavra. " LETRAS\n";
 print "\t\t\t\t".$relatorio."\n";
 sleep(1);
 
-
+# Controla a lógica central do jogo.
 do{
 
   print "QUAL SEU PALPITE, ".$jogador[$i]."?"."\n";
@@ -113,14 +118,15 @@ chomp($saindo);
 }while($saindo eq "S");
 
 @lista_vencedores = keys %vencedores;
-print "NUMERO TOTAL DE PARTIDAS: ".$numero_partidas."\n";
 
-foreach my $x (@lista_vencedores) {
+print "\n";
+foreach my $x (sort @lista_vencedores) {
   print "JOGADOR: ".$x."\tVENCEU ".$vencedores{$x}."\n";
 }
 
+print "\nTOTAL DE PARTIDAS: ".$numero_partidas."\n";
 
-
+# Função
 sub insereLetraPalavra {
   my $letra = $_[0]; #palpite de uma letra
   my $sorte = $_[1]; #palavra sorteada
@@ -141,7 +147,7 @@ sub insereLetraPalavra {
 
 }
 
-
+# Função
 sub imprimeSaida {
   my $num = $_[0];
   my $out;
@@ -152,7 +158,7 @@ sub imprimeSaida {
 
 }
 
-
+# Função
 sub setNumeroDeJogadores {
   my $numero;
 
@@ -173,6 +179,7 @@ sub setNumeroDeJogadores {
 
 }
 
+# Função
 sub contaPalavras {
 
   my $arq = $_[0];
@@ -189,6 +196,7 @@ return $cont;
 
 }
 
+# Função
 sub pegaPalavra {
 
   my $arq = $_[0];
@@ -211,6 +219,7 @@ sub pegaPalavra {
 
 }
 
+# Função
 sub iniciaJogadores {
   my $nome;
   my $numero = $_[0];
